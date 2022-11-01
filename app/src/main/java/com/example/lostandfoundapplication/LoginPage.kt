@@ -37,8 +37,18 @@ class LoginPage : AppCompatActivity() {
                 authorizer.signInWithEmailAndPassword(enteredEmail, enteredPassword).addOnCompleteListener {
                     if(it.isSuccessful)
                     {
-                        Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, MainMenuActivity :: class.java))
+                        if(authorizer.currentUser?.isEmailVerified == true) {
+                            Toast.makeText(this, "Logged in successfully", Toast.LENGTH_SHORT)
+                                .show()
+                            val proceedIntent = Intent(this, MainActivity::class.java)
+                            proceedIntent.putExtra("UID", authorizer.currentUser?.uid)
+                            startActivity(proceedIntent)
+                        }
+                        else
+                        {
+                            Toast.makeText(this, "User not verified... Please verify the user through the email sent...", Toast.LENGTH_SHORT).show()
+                            
+                        }
                     }
                     else
                     {
