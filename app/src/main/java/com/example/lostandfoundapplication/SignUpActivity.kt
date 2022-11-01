@@ -89,7 +89,6 @@ class SignUpActivity : AppCompatActivity() {
                             fDatabaseReference.child(uid).setValue(user).addOnCompleteListener { it2 ->
                                 if(it2.isSuccessful)
                                 {
-                                    // store image
                                     Toast.makeText(this, "User Registered successfully", Toast.LENGTH_SHORT).show()
                                     val fBaseUser : FirebaseUser? = authorizer.currentUser
                                     fBaseUser?.sendEmailVerification()?.addOnSuccessListener {
@@ -98,6 +97,10 @@ class SignUpActivity : AppCompatActivity() {
                                     }?.addOnFailureListener{
                                         Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
                                     }
+                                }
+                                else
+                                {
+                                    Toast.makeText(this, it2.exception.toString(), Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }
