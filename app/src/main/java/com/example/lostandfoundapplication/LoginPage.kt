@@ -13,6 +13,7 @@ class LoginPage : AppCompatActivity() {
     private lateinit var userEmailField : TextView
     private lateinit var userPasswdField : TextView
     private lateinit var loginPageButton : Button
+    private lateinit var forgotPasswdButton : Button
     private lateinit var authorizer : FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +23,7 @@ class LoginPage : AppCompatActivity() {
         userEmailField = findViewById(R.id.inpUserEmailSIPage)
         userPasswdField = findViewById(R.id.inpPasswordSIPage)
         loginPageButton = findViewById(R.id.submitDetailsButtonSIPage)
+        forgotPasswdButton = findViewById(R.id.forgotPasswordButtonSIPage)
         authorizer = FirebaseAuth.getInstance()
 
         loginPageButton.setOnClickListener {
@@ -41,6 +43,11 @@ class LoginPage : AppCompatActivity() {
                     }
                 }
             }
+        }
+
+        forgotPasswdButton.setOnClickListener {
+            val forgotPasswdIntent = Intent(this, ForgotPasswordActivity :: class.java)
+            startActivity(forgotPasswdIntent)
         }
     }
 }
