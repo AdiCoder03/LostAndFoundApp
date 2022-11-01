@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.math.sign
 
 class LoginPage : AppCompatActivity() {
 
@@ -15,6 +16,7 @@ class LoginPage : AppCompatActivity() {
     private lateinit var loginPageButton : Button
     private lateinit var forgotPasswdButton : Button
     private lateinit var authorizer : FirebaseAuth
+    private lateinit var signUpButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +26,7 @@ class LoginPage : AppCompatActivity() {
         userPasswdField = findViewById(R.id.inpPasswordSIPage)
         loginPageButton = findViewById(R.id.submitDetailsButtonSIPage)
         forgotPasswdButton = findViewById(R.id.forgotPasswordButtonSIPage)
+        signUpButton = findViewById(R.id.signUpButton)
         authorizer = FirebaseAuth.getInstance()
 
         loginPageButton.setOnClickListener {
@@ -48,6 +51,10 @@ class LoginPage : AppCompatActivity() {
         forgotPasswdButton.setOnClickListener {
             val forgotPasswdIntent = Intent(this, ForgotPasswordActivity :: class.java)
             startActivity(forgotPasswdIntent)
+        }
+
+        signUpButton.setOnClickListener {
+            startActivity(Intent(this, SignUpActivity :: class.java))
         }
     }
 }
