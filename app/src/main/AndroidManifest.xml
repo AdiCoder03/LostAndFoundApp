@@ -13,6 +13,61 @@
         android:theme="@style/Theme.LostAndFoundApplication"
         tools:targetApi="31">
         <activity
+            android:name=".MyPostsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_my_posts"
+            android:theme="@style/Theme.LostAndFoundApplication.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".FoundItemsFeedActivity"
+            android:exported="false"
+            android:label="@string/title_activity_found_items_feed"
+            android:theme="@style/Theme.LostAndFoundApplication.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".LostItemsFeedActivity"
+            android:exported="false"
+            android:label="@string/title_activity_lost_items_feed"
+            android:theme="@style/Theme.LostAndFoundApplication.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".PostForFoundActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".PostForLostActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".postForLostActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".UpdatePasswordActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".SignUpActivity"
             android:exported="false">
             <meta-data
