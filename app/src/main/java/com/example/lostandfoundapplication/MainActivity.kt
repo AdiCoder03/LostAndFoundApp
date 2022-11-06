@@ -34,11 +34,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         checkLostBtn.setOnClickListener {
-            startActivity(Intent(this, LostItemsFeedActivity :: class.java))
+            startActivity(Intent(this, LostItemFeedActivity :: class.java))
         }
 
         checkFoundBtn.setOnClickListener {
-            startActivity(Intent(this, FoundItemsFeedActivity :: class.java))
+            startActivity(Intent(this, FoundItemFeedActivity :: class.java))
         }
 
         myPostsBtn.setOnClickListener {

@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -22,6 +23,21 @@ class PostForFoundActivity : AppCompatActivity() {
         val fStore = FirebaseFirestore.getInstance()
         val docRefPostData = fStore.collection("Found Object Posts")
         var docRefUserData : CollectionReference
+
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if(user == null)
+        {
+            startActivity(Intent(this, LoginPage :: class.java))
+            Toast.makeText(this, "Some error occurred... Please login again.", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
+        fStore.collection("User Data").document(user!!.uid).get().addOnSuccessListener {
+            userNameField.text = it.get("name").toString()
+            userPhoneField.text = it.get("phone").toString()
+        }
+
 
         submitBtn.setOnClickListener {
             val name = userNameField.text.toString()

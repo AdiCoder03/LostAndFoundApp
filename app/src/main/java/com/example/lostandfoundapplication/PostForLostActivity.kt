@@ -7,6 +7,10 @@ import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.FirebaseDatabase.getInstance
+import com.google.firebase.database.snapshot.KeyIndex.getInstance
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -23,19 +27,26 @@ class PostForLostActivity : AppCompatActivity() {
         val docRefPostData = fStore.collection("Lost Object Posts")
         var docRefUserData : CollectionReference
 
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if(user == null)
+        {
+            startActivity(Intent(this, LoginPage :: class.java))
+            Toast.makeText(this, "Some error occurred... Please login again.", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
+        fStore.collection("User Data").document(user!!.uid).get().addOnSuccessListener {
+            userNameField.text = it.get("name").toString()
+            userPhoneField.text = it.get("phone").toString()
+        }
+
+
         submitBtn.setOnClickListener {
             val name = userNameField.text.toString()
             val phone = userPhoneField.text.toString()
             val location = locationField.text.toString()
             val message = messageField.text.toString()
-            val user = FirebaseAuth.getInstance().currentUser
-
-            if(user == null)
-            {
-                startActivity(Intent(this, LoginPage :: class.java))
-                Toast.makeText(this, "Some error occurred... Please login again.", Toast.LENGTH_SHORT).show()
-                finish()
-            }
 
             docRefUserData = FirebaseFirestore.getInstance().collection("User Data").document(user!!.uid).collection("Lost")
 

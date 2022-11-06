@@ -7,8 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Email
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
@@ -30,7 +34,8 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var waField : TextView
     private lateinit var submitButton: Button
     private lateinit var authorizer : FirebaseAuth
-    private lateinit var fDatabaseReference: DatabaseReference
+    private lateinit var fStoreRef: CollectionReference
+    private lateinit var dpUploadBtn : ImageView
     private lateinit var imgURI : Uri
 
     private fun isValidRoll(roll : String) : Boolean{
@@ -60,9 +65,17 @@ class SignUpActivity : AppCompatActivity() {
         phoneField = findViewById(R.id.inpUserPhoneNumber)
         waField = findViewById(R.id.inpUserWASUPage)
         submitButton = findViewById(R.id.submitDetailsButtonSUPage)
+        dpUploadBtn = findViewById(R.id.profilePicUploadButton)
         authorizer = FirebaseAuth.getInstance()
-        fDatabaseReference = FirebaseDatabase.getInstance().getReference("User Data")
+        fStoreRef = FirebaseFirestore.getInstance().collection("User Data")
 
+        val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
+            dpUploadBtn.setImageURI(it)
+        }
+
+        dpUploadBtn.setOnClickListener {
+            getContent.launch("image/*")
+        }
 
         submitButton.setOnClickListener {
             val uName = nameField.text.toString()
@@ -87,7 +100,7 @@ class SignUpActivity : AppCompatActivity() {
                         val uid = authorizer.currentUser?.uid
                         if(uid != null)
                         {
-                            fDatabaseReference.child(uid).setValue(user).addOnCompleteListener { it2 ->
+                            fStoreRef.document(uid).set(user).addOnCompleteListener { it2 ->
                                 if(it2.isSuccessful)
                                 {
                                     Toast.makeText(this, "User Registered successfully", Toast.LENGTH_SHORT).show()
