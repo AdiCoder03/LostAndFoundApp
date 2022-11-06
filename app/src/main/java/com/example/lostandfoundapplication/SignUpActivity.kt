@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import org.w3c.dom.Text
@@ -29,7 +31,6 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var submitButton: Button
     private lateinit var authorizer : FirebaseAuth
     private lateinit var fDatabaseReference: DatabaseReference
-    private lateinit var fStorageReference: StorageReference
     private lateinit var imgURI : Uri
 
     private fun isValidRoll(roll : String) : Boolean{

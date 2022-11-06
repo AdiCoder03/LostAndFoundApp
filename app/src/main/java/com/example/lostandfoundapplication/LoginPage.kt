@@ -47,7 +47,7 @@ class LoginPage : AppCompatActivity() {
                         else
                         {
                             Toast.makeText(this, "User not verified... Please verify the user through the email sent...", Toast.LENGTH_SHORT).show()
-
+                            authorizer.currentUser?.sendEmailVerification()
                         }
                     }
                     else
