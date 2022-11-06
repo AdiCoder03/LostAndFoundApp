@@ -39,8 +39,6 @@ class PostForLostActivity : AppCompatActivity() {
 
             docRefUserData = FirebaseFirestore.getInstance().collection("User Data").document(user!!.uid).collection("Lost")
 
-            Log.d("testing", docRefUserData.toString() + " is the user data doc ref ID")
-
 
             if(name.isNotEmpty()
                 && phone.isNotEmpty()
