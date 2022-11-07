@@ -1,27 +1,21 @@
 package com.example.lostandfoundapplication
 
 import android.content.Intent
-import android.graphics.text.TextRunShaper
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Email
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import org.w3c.dom.Text
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -35,6 +29,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var submitButton: Button
     private lateinit var authorizer : FirebaseAuth
     private lateinit var fStoreRef: CollectionReference
+    private lateinit var storageReference: StorageReference
     private lateinit var dpUploadBtn : ImageView
     private lateinit var imgURI : Uri
 
@@ -71,6 +66,7 @@ class SignUpActivity : AppCompatActivity() {
 
         val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
             dpUploadBtn.setImageURI(it)
+            imgURI = it!!
         }
 
         dpUploadBtn.setOnClickListener {
@@ -86,7 +82,6 @@ class SignUpActivity : AppCompatActivity() {
             val uPhone = phoneField.text.toString()
             val uWA = waField.text.toString()
 
-            val user = User(uName, uRoll, uPhone, uWA, uEmail)
 
             if(uName.isNotEmpty() &&
                 isValidRoll(uRoll) &&
@@ -100,6 +95,16 @@ class SignUpActivity : AppCompatActivity() {
                         val uid = authorizer.currentUser?.uid
                         if(uid != null)
                         {
+                            storageReference = FirebaseStorage.getInstance().getReference("images/$uid")
+                            storageReference.putFile(imgURI).addOnCompleteListener{
+                                if(it.isSuccessful) {
+                                    Log.d("testing", "Photo uploaded successfully")
+                                }
+                                else
+                                    Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                            }
+                            val user = User(uName, uRoll, uPhone, uWA, uEmail, "images/$uid")
+
                             fStoreRef.document(uid).set(user).addOnCompleteListener { it2 ->
                                 if(it2.isSuccessful)
                                 {

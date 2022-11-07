@@ -1,11 +1,17 @@
 package com.example.lostandfoundapplication
 
 import android.content.Intent
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
+import java.io.File
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,11 +24,25 @@ class MainActivity : AppCompatActivity() {
         val checkFoundBtn = findViewById<Button>(R.id.checkFoundBtnMain)
         val myPostsBtn = findViewById<Button>(R.id.myPostsBtnMain)
         val resetPasswdBtn = findViewById<Button>(R.id.changePasswdBtn)
+        val profPic = findViewById<ImageView>(R.id.userProfPic)
 
         if(FirebaseAuth.getInstance().currentUser == null)
         {
             Toast.makeText(this, "Could not authenticate the user... Please log in again...", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, LoginPage :: class.java))
+        }
+
+
+        val storageReference = FirebaseStorage.getInstance().getReference("images/${FirebaseAuth.getInstance().currentUser!!.uid}")
+
+        try {
+            val tempImg = File.createTempFile("dp_temp_${Date().toString()}", ".jpg")
+            storageReference.getFile(tempImg).addOnSuccessListener {
+                
+            }
+        }
+        catch (e : java.lang.Exception){
+            Log.d("testing", e.toString())
         }
 
         postLostBtn.setOnClickListener {
