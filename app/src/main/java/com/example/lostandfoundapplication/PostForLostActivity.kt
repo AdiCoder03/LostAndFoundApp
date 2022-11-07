@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 
 class PostForLostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +28,12 @@ class PostForLostActivity : AppCompatActivity() {
         val fStore = FirebaseFirestore.getInstance()
         val docRefPostData = fStore.collection("Lost Object Posts")
         var docRefUserData : CollectionReference
-        val picUpload = mutableListOf <ImageView>()
-        picUpload.add(findViewById(R.id.picUpload1))
-        picUpload.add(findViewById(R.id.picUpload2))
-        picUpload.add(findViewById(R.id.picUpload3))
-        picUpload.add(findViewById(R.id.picUpload4))
-        picUpload.add(findViewById(R.id.picUpload5))
+        val picUpload = mutableListOf<ImageView>()
+        picUpload.add(findViewById<ImageView>(R.id.picUpload1))
+        picUpload.add(findViewById<ImageView>(R.id.picUpload2))
+        picUpload.add(findViewById<ImageView>(R.id.picUpload3))
+        picUpload.add(findViewById<ImageView>(R.id.picUpload4))
+        picUpload.add(findViewById<ImageView>(R.id.picUpload5))
         val uploadImageBtn = findViewById<Button>(R.id.uploadImageButtonLostPostPage)
         val imgURI = mutableListOf<Uri>()
 
@@ -58,11 +57,17 @@ class PostForLostActivity : AppCompatActivity() {
             picUpload[count].setImageURI(it)
             picUpload[count].visibility = View.VISIBLE
             imgURI.add(it!!)
-            count ++;
+            Log.d("testing", it.toString())
+            count++;
         }
 
         uploadImageBtn.setOnClickListener {
-            getContent.launch("image/*")
+            if(count < 5) {
+                getContent.launch("image/*")
+            }
+            else{
+                Toast.makeText(this, "You can upload max 5 images", Toast.LENGTH_SHORT).show()
+            }
         }
 //        uploadImageBtn.setOnClickListener {
 //            var imgURI : Uri
@@ -98,33 +103,26 @@ class PostForLostActivity : AppCompatActivity() {
 
                         if(count > 0)
                         {
-                            var all_ok = true
-                            for(i in 0..(count - 1))
+                            var allOk = true
+                            val storageReference = FirebaseStorage.getInstance()
+                            for(i in 0 until count)
                             {
-                                val storageReference = FirebaseStorage.getInstance().getReference("images/${user.uid.toString()}_${it1.id.toString()}_${i + 1}")
-                                storageReference.putFile(imgURI[i]).addOnSuccessListener {
-                                    imageList.add("images/${user.uid}_${it1.id}_${i + 1}")
-                                    Log.d("testing", "Image ${i + 1} uploaded successfully")
-                                }.addOnFailureListener{
-                                    Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
-                                    Log.d("testing", it.toString())
-                                    all_ok = false
-                                }
+                                Log.d("testing 1", "$i")
+                                val filePath = ("images/${user.uid}_${it1.id}_${i + 1}")
+                                storageReference.getReference(filePath).putFile(imgURI[i])
+                                imageList.add(filePath)
                             }
-                            if(all_ok)
+                            for(i in 0 until count)
                             {
-                                for(i in 0..(count - 1))
-                                {
-                                    docRefPostData.document(it1.id).collection("images").add(ImageURLObj(imageList[i]))
-                                }
-                                Toast.makeText(this, "Posted successfully", Toast.LENGTH_SHORT).show()
-//                                startActivity(Intent(this, MainActivity :: class.java))
-//                                finish()
+                                docRefPostData.document(it1.id).collection("images").add(ImageURLObj(imageList[i]))
                             }
+                            Toast.makeText(this, "Posted successfully", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, MainActivity :: class.java))
+                            finish()
                         }
                         else {
-//                            startActivity(Intent(this, MainActivity::class.java))
-//                            finish()
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
                         }
                     }.addOnFailureListener {
                         Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
