@@ -1,6 +1,7 @@
 package com.example.lostandfoundapplication
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -38,7 +39,10 @@ class MainActivity : AppCompatActivity() {
         try {
             val tempImg = File.createTempFile("dp_temp_${Date().toString()}", ".jpg")
             storageReference.getFile(tempImg).addOnSuccessListener {
-                
+                val bitmap = BitmapFactory.decodeFile(tempImg.absolutePath)
+                profPic.setImageBitmap(bitmap)
+            }.addOnFailureListener{
+                Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
             }
         }
         catch (e : java.lang.Exception){
