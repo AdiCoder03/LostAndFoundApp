@@ -4,14 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 
-class LostAdapter(private val lostList: ArrayList<LostPost>) : RecyclerView.Adapter<LostAdapter.ViewHolder>() {
+class LostAdapter(private val lostList: ArrayList<LostObjectPost>) : RecyclerView.Adapter<LostAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LostAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.lost_list_items,
+        val itemView =  LayoutInflater.from(parent.context).inflate(R.layout.lost_list_items,
         parent, false)
 
         return ViewHolder(itemView)
@@ -20,11 +19,11 @@ class LostAdapter(private val lostList: ArrayList<LostPost>) : RecyclerView.Adap
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val lostpost : LostPost = lostList[position]
-        holder.location.text = lostpost.location
-        holder.name.text = lostpost.name
-        holder.phone.text = lostpost.phone
-        holder.msg.text = lostpost.msg
+        val lostPost : LostObjectPost = lostList[position]
+        holder.location.text = lostPost.location
+        holder.name.text = lostPost.name
+        holder.phone.text = lostPost.phone
+        holder.msg.text = lostPost.msg
 
     }
 

@@ -10,32 +10,31 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.protobuf.Value
 
 class LostItemFeedActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var la: LostAdapter
     private lateinit var db: FirebaseFirestore
-    private lateinit var listoflost: ArrayList<LostPost>
+    private lateinit var listOfLost: ArrayList<LostObjectPost>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lost_item_feed)
 
-        recyclerView = findViewById(R.id.lostfeedrecur)
+        recyclerView = findViewById(R.id.lostFeedRecur)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-        listoflost = arrayListOf()
+        listOfLost = arrayListOf()
 
-        la = LostAdapter(listoflost)
+        la = LostAdapter(listOfLost)
         recyclerView.adapter = la
 
-        LostFun()
+        lostFun()
 
     }
 
-    private fun LostFun()
+    private fun lostFun()
     {
         db  = FirebaseFirestore.getInstance()
         db.collection("Lost Object Posts").
@@ -51,7 +50,7 @@ class LostItemFeedActivity : AppCompatActivity() {
                 }
                 for(dc: DocumentChange in value?.documentChanges!!){
                     if(dc.type == DocumentChange.Type.ADDED){
-                        listoflost.add(dc.document.toObject(LostPost::class.java))
+                        listOfLost.add(dc.document.toObject(LostObjectPost::class.java))
 
 
                     }
