@@ -1,3 +1,5 @@
 package com.example.lostandfoundapplication
 
-data class LostObjectPost(val name : String, val phone : String, val location : String, val msg : String, val userID : String, val img_count : Int)
+import com.google.type.DateTime
+
+data class LostObjectPost(val name : String ?= null, val phone : String ?= null, val location : String ?= null, val msg : String ?= null, val userID : String ?= null, val img_count : Int ?= 0, val date_time  : DateTime ?= null)
