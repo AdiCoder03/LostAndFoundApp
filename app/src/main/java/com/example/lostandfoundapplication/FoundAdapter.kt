@@ -19,32 +19,32 @@ import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
-class LostAdapter(private val lostList: ArrayList<LostObjectPost>) : RecyclerView.Adapter<LostAdapter.ViewHolder>() {
+class FoundAdapter(private val foundList: ArrayList<FoundObjectPost>) : RecyclerView.Adapter<FoundAdapter.ViewHolder>() {
 
     private val storageReference = FirebaseStorage.getInstance()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
-        val itemView =  LayoutInflater.from(parent.context).inflate(R.layout.lost_list_items,
-        parent, false)
+        val itemView =  LayoutInflater.from(parent.context).inflate(R.layout.found_list_items,
+            parent, false)
 
         return ViewHolder(itemView)
     }
 
     // binds the list items to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val lostPost : LostObjectPost = lostList[position]
-        holder.location.text = lostPost.location
-        holder.name.text = lostPost.name
-        holder.phone.text = lostPost.phone
-        holder.msg.text = lostPost.msg
-        holder.dateTime.text = lostPost.date_time
-        if(lostPost.img_count!=null && lostPost.img_count > 0)
+        val foundPost : FoundObjectPost = foundList[position]
+        holder.location.text = foundPost.location
+        holder.name.text = foundPost.name
+        holder.phone.text = foundPost.phone
+        holder.msg.text = foundPost.msg
+        holder.dateTime.text = foundPost.date_time
+        if(foundPost.img_count!=null && foundPost.img_count > 0)
         {
-            for(i in 0 until lostPost.img_count)
+            for(i in 0 until foundPost.img_count)
             {
-                val tempFile = File.createTempFile("${lostPost.doc_id}_${i + 1}", ".jpg")
-                storageReference.getReference("images/${lostPost.userID}_${lostPost.doc_id}_${i + 1}").getFile(tempFile).addOnSuccessListener{
+                val tempFile = File.createTempFile("${foundPost.doc_id}_${i + 1}", ".jpg")
+                storageReference.getReference("images/${foundPost.userID}_${foundPost.doc_id}_${i + 1}").getFile(tempFile).addOnSuccessListener{
                     val bitmap = BitmapFactory.decodeFile(tempFile.absolutePath)
                     holder.pics[i].setImageBitmap(bitmap)
                     holder.pics[i].visibility = View.VISIBLE
@@ -57,7 +57,7 @@ class LostAdapter(private val lostList: ArrayList<LostObjectPost>) : RecyclerVie
 
     // return the number of the items in the list
     override fun getItemCount(): Int {
-        return lostList.size
+        return foundList.size
     }
 
     // Holds the views for adding it to image and text

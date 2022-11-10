@@ -6,4 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".FoundItemFeedActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lostFeedRecur"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/found_list_items"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

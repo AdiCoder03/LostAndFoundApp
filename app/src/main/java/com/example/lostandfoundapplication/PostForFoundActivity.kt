@@ -15,6 +15,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.type.DateTime
+import java.text.SimpleDateFormat
+import java.time.Instant.now
+import java.time.LocalDate.now
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class PostForFoundActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,23 +93,25 @@ class PostForFoundActivity : AppCompatActivity() {
             val phone = userPhoneField.text.toString()
             val location = locationField.text.toString()
             val message = messageField.text.toString()
+            val formatter = DateTimeFormatter.ofPattern("HH:mm:ss yyyy-MM-dd")
+            val date = LocalDateTime.now().format(formatter)
             val imageList = mutableListOf<String>()
 
             docRefUserData = FirebaseFirestore.getInstance().collection("User Data").document(user.uid).collection("Found")
-
 
             if(name.isNotEmpty()
                 && phone.isNotEmpty()
                 && location.isNotEmpty()
                 && message.isNotEmpty())
             {
-                val post = FoundObjectPost (name, phone, location, message, user.uid, count)
+                val post = FoundObjectPost (name, phone, location, message, user.uid, count, date)
                 docRefPostData.add(post).addOnSuccessListener { it1 ->
+                    post.doc_id = it1.id.toString()
+                    docRefPostData.document(it1.id).set(post)
                     docRefUserData.add(PostObj(it1.id)).addOnSuccessListener {
 
                         if(count > 0)
                         {
-                            var allOk = true
                             val storageReference = FirebaseStorage.getInstance()
                             for(i in 0 until count)
                             {
