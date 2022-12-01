@@ -1,22 +1,20 @@
 package com.example.lostandfoundapplication
 
 import android.graphics.BitmapFactory
-import android.media.Image
-import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.FirebaseStorage.getInstance
-import com.google.firebase.storage.StorageReference
+import papaya.`in`.sendmail.SendMail
 import java.io.File
-import java.lang.Exception
-import java.util.*
 import kotlin.collections.ArrayList
 
 class LostAdapter(private val lostList: ArrayList<LostObjectPost>) : RecyclerView.Adapter<LostAdapter.ViewHolder>() {
@@ -53,6 +51,22 @@ class LostAdapter(private val lostList: ArrayList<LostObjectPost>) : RecyclerVie
                 }
             }
         }
+        holder.foundBtn.setOnClickListener {
+            FirebaseFirestore.getInstance().collection("User Data").document(FirebaseAuth.getInstance().currentUser!!.uid).get().addOnSuccessListener {it1->
+                FirebaseFirestore.getInstance().collection("User Data").document(lostPost.userID!!).get().addOnSuccessListener {
+                    val message =
+                        "You had posted for a lost object which has been reported found by a user whose contact details are as follows:\nEmail: ${it1.get("email")}\nPhone: ${it1.get("phone")}"
+                    val mail: SendMail = SendMail(
+                        "lostandfoundappiitp@gmail.com",
+                        "ghvaflrlunstjrwd",
+                        it.get("email").toString(),
+                        "Lost object reported found",
+                        message
+                    )
+                    mail.execute()
+                }
+            }
+        }
     }
 
     // return the number of the items in the list
@@ -68,6 +82,7 @@ class LostAdapter(private val lostList: ArrayList<LostObjectPost>) : RecyclerVie
         val phone: TextView = itemView.findViewById(R.id.phone)
         val msg: TextView = itemView.findViewById(R.id.msg)
         val dateTime : TextView = itemView.findViewById(R.id.date_and_time)
+        val foundBtn : Button = itemView.findViewById(R.id.claimBtn)
         val pics = mutableListOf<ImageView>(itemView.findViewById(R.id.img1),itemView.findViewById(R.id.img2),itemView.findViewById(R.id.img3),itemView.findViewById(R.id.img4),itemView.findViewById(R.id.img5))
     }
 }

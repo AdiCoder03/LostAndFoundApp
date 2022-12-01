@@ -156,12 +156,12 @@
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/claim"
+                    android:id="@+id/claimBtn"
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="Claim" />
+                    android:text="I found it" />
             </LinearLayout>
 
         </LinearLayout>

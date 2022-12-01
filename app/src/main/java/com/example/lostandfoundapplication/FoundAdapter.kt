@@ -8,12 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.FirebaseStorage.getInstance
 import com.google.firebase.storage.StorageReference
+import papaya.`in`.sendmail.SendMail
 import java.io.File
 import java.lang.Exception
 import java.util.*
@@ -53,6 +57,22 @@ class FoundAdapter(private val foundList: ArrayList<FoundObjectPost>) : Recycler
                 }
             }
         }
+        holder.claimBtn.setOnClickListener {
+            FirebaseFirestore.getInstance().collection("User Data").document(FirebaseAuth.getInstance().currentUser!!.uid).get().addOnSuccessListener { it1->
+                FirebaseFirestore.getInstance().collection("User Data").document(foundPost.userID!!).get().addOnSuccessListener {
+                    val message =
+                        "You had posted for a found object which has been claimed by a user whose contact details are as follows:\nEmail: ${it1.get("email")}\nPhone: ${it1.get("phone")}"
+                    val mail: SendMail = SendMail(
+                        "lostandfoundappiitp@gmail.com",
+                        "ghvaflrlunstjrwd",
+                        it.get("email").toString(),
+                        "Found object claimed",
+                        message
+                    )
+                    mail.execute()
+                }
+            }
+        }
     }
 
     // return the number of the items in the list
@@ -68,6 +88,7 @@ class FoundAdapter(private val foundList: ArrayList<FoundObjectPost>) : Recycler
         val phone: TextView = itemView.findViewById(R.id.phone)
         val msg: TextView = itemView.findViewById(R.id.msg)
         val dateTime : TextView = itemView.findViewById(R.id.date_and_time)
+        val claimBtn = itemView.findViewById<Button>(R.id.claimBtn)
         val pics = mutableListOf<ImageView>(itemView.findViewById(R.id.img1),itemView.findViewById(R.id.img2),itemView.findViewById(R.id.img3),itemView.findViewById(R.id.img4),itemView.findViewById(R.id.img5))
     }
 }
