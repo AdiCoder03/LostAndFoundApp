@@ -68,6 +68,8 @@ class MyPostAdapter(private val postList : ArrayList<MyPostObject>, private val 
         holder.editBtn.setOnClickListener {
             val bundle = Bundle()
             val intent = Intent(context, EditActivity :: class.java)
+            intent.putExtra("postID", post.doc_id)
+            intent.putExtra("postType", type)
             startActivity(context, intent, bundle)
         }
     }

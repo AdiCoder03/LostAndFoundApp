@@ -7,10 +7,10 @@
     tools:context=".PostForFoundActivity">
 
     <EditText
-        android:id="@+id/inpWhereFoundFoundPostPage"
+        android:id="@+id/inpWhereEditPostPage"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="Where found"
+        android:hint="Found where"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.653" />
 
     <EditText
-        android:id="@+id/inpUserNameFoundPostPage"
+        android:id="@+id/inpUserNameEditPostPage"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Name"
@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.423" />
 
     <EditText
-        android:id="@+id/inpUserPhoneFoundPostPage"
+        android:id="@+id/inpUserPhoneEditPostPage"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Phone"
@@ -49,7 +49,7 @@
         app:layout_constraintVertical_bias="0.536" />
 
     <Button
-        android:id="@+id/submitDetailsPostFoundPage"
+        android:id="@+id/updateDetailsPostEditPage"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="Submit"
@@ -62,7 +62,7 @@
         app:layout_constraintVertical_bias="0.888" />
 
     <EditText
-        android:id="@+id/inpMessageFoundPostPage"
+        android:id="@+id/inpMessageEditPostPage"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Message"
@@ -141,7 +141,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
-        android:id="@+id/uploadImageButtonFoundPostPage"
+        android:id="@+id/uploadImageButtonEditPostPage"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="Upload Image"

@@ -15,10 +15,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.google.type.DateTime
-import java.text.SimpleDateFormat
-import java.time.Instant.now
-import java.time.LocalDate.now
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -26,11 +22,11 @@ class PostForFoundActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_for_found)
-        val userNameField = findViewById<TextView>(R.id.inpUserNameFoundPostPage)
-        val userPhoneField = findViewById<TextView>(R.id.inpUserPhoneFoundPostPage)
-        val locationField = findViewById<TextView>(R.id.inpWhereFoundFoundPostPage)
-        val messageField = findViewById<TextView>(R.id.inpMessageFoundPostPage)
-        val submitBtn = findViewById<TextView>(R.id.submitDetailsPostFoundPage)
+        val userNameField = findViewById<TextView>(R.id.inpUserNameEditPostPage)
+        val userPhoneField = findViewById<TextView>(R.id.inpUserPhoneEditPostPage)
+        val locationField = findViewById<TextView>(R.id.inpWhereEditPostPage)
+        val messageField = findViewById<TextView>(R.id.inpMessageEditPostPage)
+        val submitBtn = findViewById<TextView>(R.id.updateDetailsPostEditPage)
         val fStore = FirebaseFirestore.getInstance()
         val docRefPostData = fStore.collection("Found Object Posts")
         var docRefUserData : CollectionReference
@@ -40,7 +36,7 @@ class PostForFoundActivity : AppCompatActivity() {
         picUpload.add(findViewById<ImageView>(R.id.picUpload3))
         picUpload.add(findViewById<ImageView>(R.id.picUpload4))
         picUpload.add(findViewById<ImageView>(R.id.picUpload5))
-        val uploadImageBtn = findViewById<Button>(R.id.uploadImageButtonFoundPostPage)
+        val uploadImageBtn = findViewById<Button>(R.id.uploadImageButtonEditPostPage)
         val imgURI = mutableListOf<Uri>()
 
 
