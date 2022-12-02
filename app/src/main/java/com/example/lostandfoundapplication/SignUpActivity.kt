@@ -82,6 +82,8 @@ class SignUpActivity : AppCompatActivity() {
             val uPhone = phoneField.text.toString()
             val uWA = waField.text.toString()
 
+            val flag = uEmail.endsWith("@iitp.ac.in")
+
 
             if(uName.isNotEmpty() &&
                 isValidRoll(uRoll) &&
@@ -89,7 +91,8 @@ class SignUpActivity : AppCompatActivity() {
                     isValidPasswd(uConfPasswd) &&
                     isValidPhone(uPhone) &&
                     isValidPhone(uWA) &&
-                    uPasswd == uConfPasswd){
+                    uPasswd == uConfPasswd &&
+                    flag){
                 authorizer.createUserWithEmailAndPassword(uEmail, uPasswd).addOnCompleteListener { it1 ->
                     if(it1.isSuccessful){
                         val uid = authorizer.currentUser?.uid
