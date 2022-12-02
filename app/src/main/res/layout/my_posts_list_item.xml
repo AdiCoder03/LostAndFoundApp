@@ -156,11 +156,19 @@
                     android:textColor="?android:attr/textColorSecondary" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/claimBtn"
+                    android:id="@+id/editBtn"
                     style="?attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="Edit" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/deleteBtn"
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:text="Delete" />
             </LinearLayout>
 

@@ -1,17 +1,23 @@
 package com.example.lostandfoundapplication
 
+import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
-class MyPostAdapter(private val postList : ArrayList<MyPostObject>) : RecyclerView.Adapter<MyPostAdapter.ViewHolder>(){
+class MyPostAdapter(private val postList : ArrayList<MyPostObject>, private val context : MyPostsActivity) : RecyclerView.Adapter<MyPostAdapter.ViewHolder>(){
     override fun getItemCount(): Int {
         return postList.size
     }
@@ -29,6 +35,8 @@ class MyPostAdapter(private val postList : ArrayList<MyPostObject>) : RecyclerVi
         holder.phone.text = post.phone
         holder.msg.text = post.msg
         holder.date.text = post.date_time
+        var type = 0
+
         if(post.img_count!=null && post.img_count > 0)
         {
             for(i in 0 until post.img_count)
@@ -43,14 +51,35 @@ class MyPostAdapter(private val postList : ArrayList<MyPostObject>) : RecyclerVi
                 }
             }
         }
+        val fs = FirebaseFirestore.getInstance()
+        fs.collection("Lost Object Posts").document(post.doc_id!!).get().addOnSuccessListener {
+            if(it.exists()) type = 1
+            else type = 2
+        }.addOnFailureListener {
+            type = 2
+        }
+        holder.delBtn.setOnClickListener {
+            if(type == 1)
+                    fs.collection("Lost Object Posts").document(post.doc_id!!).delete()
+
+            else
+                    fs.collection("Found Object Posts").document(post.doc_id!!).delete()
+        }
+        holder.editBtn.setOnClickListener {
+            val bundle = Bundle()
+            val intent = Intent(context, EditActivity :: class.java)
+            startActivity(context, intent, bundle)
+        }
     }
 
-    public class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+    class ViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val name : TextView = itemView.findViewById(R.id.name)
         val phone : TextView = itemView.findViewById(R.id.phone)
         val msg : TextView = itemView.findViewById(R.id.msg)
         val location : TextView = itemView.findViewById(R.id.location)
         val date : TextView = itemView.findViewById(R.id.date_and_time)
+        val delBtn : Button = itemView.findViewById(R.id.deleteBtn)
+        val editBtn : Button = itemView.findViewById(R.id.editBtn)
         val pics = mutableListOf<ImageView>(itemView.findViewById(R.id.img1),itemView.findViewById(R.id.img2),itemView.findViewById(R.id.img3),itemView.findViewById(R.id.img4),itemView.findViewById(R.id.img5))
     }
 }

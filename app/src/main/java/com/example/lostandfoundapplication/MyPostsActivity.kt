@@ -30,7 +30,7 @@ class MyPostsActivity : AppCompatActivity() {
 
         myPostsList = arrayListOf()
 
-        myPostAdapter  = MyPostAdapter(myPostsList)
+        myPostAdapter  = MyPostAdapter(myPostsList, this)
 
         recyclerView.adapter = myPostAdapter
 
@@ -41,7 +41,11 @@ class MyPostsActivity : AppCompatActivity() {
     {
         stRef = FirebaseFirestore.getInstance()
 
-        stRef.collection("Found Object Posts").whereEqualTo("userID", FirebaseAuth.getInstance().currentUser!!.uid).addSnapshotListener(object : EventListener<QuerySnapshot>{
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+
+        Log.e("umm", "User ID $uid")
+
+        stRef.collection("Found Object Posts").whereEqualTo("userID", uid).addSnapshotListener(object : EventListener<QuerySnapshot>{
             override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
                 if(error != null)
                 {
@@ -59,7 +63,7 @@ class MyPostsActivity : AppCompatActivity() {
             }
         })
 
-        stRef.collection("Lost Object Posts").whereEqualTo("userID", FirebaseAuth.getInstance().currentUser!!.uid).addSnapshotListener(object : EventListener<QuerySnapshot>{
+        stRef.collection("Lost Object Posts").whereEqualTo("userID",uid).addSnapshotListener(object : EventListener<QuerySnapshot>{
             override fun onEvent(value: QuerySnapshot?, error: FirebaseFirestoreException?) {
                 if(error != null)
                 {
@@ -78,6 +82,8 @@ class MyPostsActivity : AppCompatActivity() {
         })
 
         myPostsList.sortWith(compareBy { it.date_time })
+
+        Log.e("umm", "Sorted successfully")
 
         myPostAdapter.notifyDataSetChanged()
     }
